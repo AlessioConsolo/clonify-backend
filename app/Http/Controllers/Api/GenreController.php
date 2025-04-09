@@ -8,48 +8,65 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    // Recupera tutte le categorie (generi)
     public function index()
     {
-        return response()->json(Genre::all());
+        $genres = Genre::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $genres,
+            'message' => 'Genres list retrieved successfully.'
+        ]);
     }
 
-    // Mostra un singolo genere
     public function show(Genre $genre)
     {
-        return response()->json($genre);
+        return response()->json([
+            'success' => true,
+            'data' => $genre,
+            'message' => 'Genre retrieved successfully.'
+        ]);
     }
 
-    // Crea un nuovo genere
     public function store(Request $request)
     {
-        // Validazione dei dati in ingresso
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
         $genre = Genre::create($validated);
-        return response()->json($genre, 201);
+
+        return response()->json([
+            'success' => true,
+            'data' => $genre,
+            'message' => 'Genre created successfully.'
+        ], 201);
     }
 
-    // Aggiorna un genere esistente
     public function update(Request $request, Genre $genre)
     {
-        // Validazione dei dati in ingresso
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
         $genre->update($validated);
-        return response()->json($genre);
+
+        return response()->json([
+            'success' => true,
+            'data' => $genre,
+            'message' => 'Genre updated successfully.'
+        ]);
     }
 
-    // Elimina un genere
     public function destroy(Genre $genre)
     {
         $genre->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Genre deleted successfully.'
+        ], 204);
     }
 }

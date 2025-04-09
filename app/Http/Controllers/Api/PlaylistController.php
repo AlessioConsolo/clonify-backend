@@ -11,13 +11,23 @@ class PlaylistController extends Controller
     // Recupera tutte le playlist
     public function index()
     {
-        return response()->json(Playlist::all());
+        $playlists = Playlist::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $playlists,
+            'message' => 'Playlists retrieved successfully.'
+        ]);
     }
 
     // Mostra una singola playlist
     public function show(Playlist $playlist)
     {
-        return response()->json($playlist);
+        return response()->json([
+            'success' => true,
+            'data' => $playlist,
+            'message' => 'Playlist retrieved successfully.'
+        ]);
     }
 
     // Crea una nuova playlist
@@ -30,7 +40,12 @@ class PlaylistController extends Controller
         ]);
 
         $playlist = Playlist::create($validated);
-        return response()->json($playlist, 201);
+
+        return response()->json([
+            'success' => true,
+            'data' => $playlist,
+            'message' => 'Playlist created successfully.'
+        ], 201);
     }
 
     // Aggiorna una playlist esistente
@@ -43,13 +58,22 @@ class PlaylistController extends Controller
         ]);
 
         $playlist->update($validated);
-        return response()->json($playlist);
+
+        return response()->json([
+            'success' => true,
+            'data' => $playlist,
+            'message' => 'Playlist updated successfully.'
+        ]);
     }
 
     // Elimina una playlist
     public function destroy(Playlist $playlist)
     {
         $playlist->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Playlist deleted successfully.'
+        ], 204);
     }
 }

@@ -8,22 +8,28 @@ use Illuminate\Http\Request;
 
 class AlbumController extends Controller
 {
-    // Recupera tutti gli album
     public function index()
     {
-        return response()->json(Album::all());
+        $albums = Album::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $albums,
+            'message' => 'Album list retrieved successfully.'
+        ]);
     }
 
-    // Mostra un singolo album
     public function show(Album $album)
     {
-        return response()->json($album);
+        return response()->json([
+            'success' => true,
+            'data' => $album,
+            'message' => 'Album retrieved successfully.'
+        ]);
     }
 
-    // Crea un nuovo album
     public function store(Request $request)
     {
-        // Validazione dei dati in ingresso
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'artist_id' => 'required|exists:artists,id',
@@ -31,13 +37,16 @@ class AlbumController extends Controller
         ]);
 
         $album = Album::create($validated);
-        return response()->json($album, 201);
+
+        return response()->json([
+            'success' => true,
+            'data' => $album,
+            'message' => 'Album created successfully.'
+        ], 201);
     }
 
-    // Aggiorna un album esistente
     public function update(Request $request, Album $album)
     {
-        // Validazione dei dati in ingresso
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'artist_id' => 'required|exists:artists,id',
@@ -45,13 +54,21 @@ class AlbumController extends Controller
         ]);
 
         $album->update($validated);
-        return response()->json($album);
+
+        return response()->json([
+            'success' => true,
+            'data' => $album,
+            'message' => 'Album updated successfully.'
+        ]);
     }
 
-    // Elimina un album
     public function destroy(Album $album)
     {
         $album->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Album deleted successfully.'
+        ], 204);
     }
 }
